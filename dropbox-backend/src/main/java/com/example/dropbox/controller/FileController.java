@@ -18,6 +18,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Controller for handling file management APIs.
+ */
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
@@ -27,6 +30,11 @@ public class FileController {
         this.fileService = fileService;
     }
 
+    /**
+     * API to upload a file.
+     * @param file MultipartFile to upload.
+     * @return Metadata of the uploaded file or an error response.
+     */
     @PostMapping("/upload")
     public ResponseEntity<FileMetadata> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
@@ -36,11 +44,20 @@ public class FileController {
         }
     }
 
+    /**
+     * API to list all uploaded files.
+     * @return List of file metadata.
+     */
     @GetMapping
     public List<FileMetadata> listFiles() {
         return fileService.listFiles();
     }
 
+    /**
+     * API to download a file by filename.
+     * @param fileName Name of the file to download.
+     * @return The file resource or a 404 response if not found.
+     */
     @GetMapping("/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
         try {
@@ -54,6 +71,11 @@ public class FileController {
         }
     }
 
+    /**
+     * API to delete a file by ID.
+     * @param id ID of the file to delete.
+     * @return Response indicating success or failure.
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
         try {

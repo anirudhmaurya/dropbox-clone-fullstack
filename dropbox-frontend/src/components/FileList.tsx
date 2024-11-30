@@ -3,9 +3,9 @@ import axios from "axios";
 import "./FileList.css";
 
 interface FileItem {
-  id: string;
-  name: string;
-  type: string;
+  id: string; // Unique file identifier
+  name: string; // File name
+  type: string; // File type (e.g., text/plain, image/png)
   size: string; // Size as a string, e.g., "12.3 KB"
 }
 
@@ -13,6 +13,9 @@ const FileList = ({ goBack }: { goBack: () => void }) => {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [error, setError] = useState<string>("");
 
+  /**
+   * Fetches the list of uploaded files from the backend.
+   */
   const fetchFiles = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/files");
@@ -29,6 +32,10 @@ const FileList = ({ goBack }: { goBack: () => void }) => {
     }
   };
 
+  /**
+   * Handles downloading a file by its filename.
+   * @param filename The name of the file to download.
+   */
   const downloadFile = async (fileName: string) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/files/${fileName}`, {
@@ -48,6 +55,10 @@ const FileList = ({ goBack }: { goBack: () => void }) => {
     }
   };
 
+  /**
+   * Handles deleting a file by its ID.
+   * @param id The ID of the file to delete.
+   */
   const deleteFile = async (id: any) => {
     try {
       await axios.delete(`http://localhost:8080/api/files/delete/${id}`);
@@ -58,6 +69,7 @@ const FileList = ({ goBack }: { goBack: () => void }) => {
     }
   };
 
+  // Fetch files when the component loads
   useEffect(() => {
     fetchFiles();
   }, []);

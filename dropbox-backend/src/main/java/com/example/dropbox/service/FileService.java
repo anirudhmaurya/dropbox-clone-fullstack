@@ -14,6 +14,7 @@ import java.util.List;
 public class FileService {
     private final FileMetadataRepository repository;
 
+    // Configurable storage location for files
     @Value("${file.storage.location}")
     private String storageLocation;
 
@@ -21,6 +22,12 @@ public class FileService {
         this.repository = repository;
     }
 
+    /**
+     * Saves a file to the storage location and stores metadata in the database.
+     * @param file MultipartFile to save.
+     * @return File metadata saved in the database.
+     * @throws IOException if file saving fails.
+     */
     public FileMetadata saveFile(MultipartFile file) throws IOException {
         // Validate file type and size
         String fileName = file.getOriginalFilename();
@@ -34,14 +41,28 @@ public class FileService {
         return repository.save(metadata);
     }
 
+    /**
+     * Retrieves a list of all uploaded files from the database.
+     * @return List of file metadata.
+     */
     public List<FileMetadata> listFiles() {
         return repository.findAll();
     }
 
+    /**
+     * Retrieves the file path of a given filename.
+     * @param fileName Name of the file to locate.
+     * @return Path to the file.
+     */
     public Path getFile(String fileName) {
         return Paths.get(storageLocation).resolve(fileName).normalize();
     }
 
+    /**
+     * Deletes a file by its ID.
+     * @param id ID of the file to delete.
+     * @return True if deletion was successful, false otherwise.
+     */
     public void deleteFile(Long id) throws IOException {
         FileMetadata metadata = repository.findById(id)
                 .orElseThrow(() -> new NoSuchFileException("File with ID " + id + " not found"));
