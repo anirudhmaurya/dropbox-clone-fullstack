@@ -42,4 +42,4 @@ This is a **React** application that provides a user interface to upload, view, 
 
 ## Open in browser
 
-    Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    Open (http://localhost:3000) to view it in the browser.
